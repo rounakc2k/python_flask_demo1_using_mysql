@@ -13,8 +13,21 @@ app.config['MYSQL_DB'] = 'world'
 
 mysql = MySQL(app)
 
-@app.route('/')
+@app.route('/' ,methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+
+        if request.form.get('status'):
+            return redirect('/status')
+
+        if request.form.get('index'):
+            return redirect('/index')
+
+        if request.form.get('users'):
+            return redirect('/users')
+
+        if request.form.get('users1'):
+            return redirect('/users1')
     return render_template('home.html')
 
 @app.route('/status', methods=['GET', 'POST'])
@@ -52,10 +65,21 @@ def index():
 @app.route('/users')
 def users():
     cur = mysql.connection.cursor()
-    resultValue = cur.execute("SELECT * FROM city")
+    resultValue = cur.execute("call Allusers")
     if resultValue > 0:
         userDetails = cur.fetchall()
         return render_template('users.html',userDetails=userDetails)
+
+@app.route('/users1')
+def users1():
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute("SELECT ID, Name FROM city")
+    if resultValue > 0:
+        userDetails = cur.fetchall()
+        return render_template('users1.html',userDetails=userDetails)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
