@@ -41,28 +41,46 @@ def login():
 def home1():
     if request.method == 'POST':
 
-            if request.form.get('procedure1'):
-                cur = mysql.connection.cursor()
-                cur.execute("call Allusers")
-                cur.close()
+            # proceduresindex = ['procedure1','procedure2','procedure3','procedure4']
 
-            if request.form.get('procedure2'):
-                cur = mysql.connection.cursor()
-                cur.execute("SELECT ID, Name FROM city")
-                cur.close()
+            # procedure = ["call Allusers",
+            # "SELECT ID, Name FROM city",
+            # "SELECT Name FROM city",
+            # "SELECT ID FROM city"]
 
-            if request.form.get('procedure3'):
-                cur = mysql.connection.cursor()
-                cur.execute("SELECT Name FROM city")
-                cur.close()
+            proceduresindex = [
+            ['procedure1',"call Allusers"],
+            ['procedure2',"SELECT ID, Name FROM city"],
+            ['procedure3',"SELECT Name FROM city"],
+            ['procedure4',"SELECT ID FROM city"]
+            ]
 
-            if request.form.get('procedure4'):
-                cur = mysql.connection.cursor()
-                cur.execute("SELECT ID FROM city")
-                cur.close()
+            for i in range(len(proceduresindex)):
 
-            if request.form.get('procedure1') or request.form.get('procedure2') or request.form.get('procedure3') or request.form.get('procedure4'):
-                return 'Procedure Executed'
+                if request.form.get(proceduresindex[i][0]):
+                    cur = mysql.connection.cursor()
+                    cur.execute(proceduresindex[i][1])
+                    cur.close()
+
+            # if request.form.get('procedure2'):
+            #     cur = mysql.connection.cursor()
+            #     cur.execute("SELECT ID, Name FROM city")
+            #     cur.close()
+
+            # if request.form.get('procedure3'):
+            #     cur = mysql.connection.cursor()
+            #     cur.execute("SELECT Name FROM city")
+            #     cur.close()
+
+            # if request.form.get('procedure4'):
+            #     cur = mysql.connection.cursor()
+            #     cur.execute("SELECT ID FROM city")
+            #     cur.close()
+
+            for i in range(len(proceduresindex)):
+
+                if request.form.get(proceduresindex[i][0]):
+                    return 'Procedure Executed'
      
     return render_template('home1.html')
 
