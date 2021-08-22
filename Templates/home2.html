@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Webpage</title>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
+
+<link rel="stylesheet" href="{{url_for('static', filename='./css/listbox.css')}}">
+
+</head>
+<style>
+    Body {  
+  font-family: Calibri, Helvetica, sans-serif;  
+  background-color: rgb(1, 41, 41);  
+  border: 5px solid white;
+  padding: 100%;
+  margin: 5px;
+}  
+.container {   
+        padding: 25px;   
+        background-color: lightblue;  
+    }   
+</style>
+
+<body>
+
+
+    
+<div class="draggable-main">
+<style>
+        h1{
+        position: absolute;
+        left:100px;
+        top: 15px;
+        }
+</style>
+
+<h1>Listbox</h1>
+
+<style>
+    h2{
+    position: absolute;
+    left:600px;
+    top: -10px;
+    white-space: normal; 
+    }
+</style>
+<h2 id="h2">Execute 
+    <br>(tick checkbox to confirm)
+</h2>
+
+<style>
+    div{
+    position: absolute;
+    left:100px;
+    top: 70px;
+    color: rgb(255, 255, 255);
+    }
+</style>
+
+
+<div class="box">
+<ul class="connected-sortable draggable-left" name = "left">
+
+<li><input type= "checkbox" value = "1" name="procedure1" ><span>Procedure 1</span></li>
+<li><input type= "checkbox" value = "2" name="procedure2" ><span>Procedure 2</span></li>
+<li><input type= "checkbox" value = "3" name="procedure3" ><span>Procedure 3</span></li>
+<li><input type= "checkbox" value = "4" name="procedure4" ><span>Procedure 4</span></li>
+  
+</ul>
+</div>
+<form method="POST" action="/home2">
+<div style = "position:relative; top:400px;">
+    <style>
+        button {   
+       background-color: #66e0e4;   
+       width: 100%;  
+        color: rgb(0, 0, 0);   
+        padding: 15px;   
+        margin: 10px 0px;   
+        border: none;   
+        cursor: pointer;   
+         }   
+    </style>
+     <button type="submit"><p style="font-weight: bold;">Login</p></button>   
+    </div>
+
+
+<style>
+    div1{
+    position: absolute;
+    left:600px;
+    top: 70px;
+    color: rgb(255, 255, 255);
+    }
+</style>
+
+<div1 class="box">
+<ul class="connected-sortable draggable-right" name = "right">
+
+</ul>
+
+</div1>
+
+</form>
+<script src="{{url_for('static', filename='js/listbox.js')}}" type="text/javascript"></script>
+</div>
+
+
+</body>
+</html>
