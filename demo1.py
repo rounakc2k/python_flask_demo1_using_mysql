@@ -19,19 +19,30 @@ mysql = MySQL(app)
 
 @app.route('/' ,methods=['GET','POST'])
 def login():
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'type' in request.form:
        # Fetch form data
        username = request.form['username']
        password = request.form['password']
+       type = request.form['type']
     
        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-       cur.execute('select * from login where username = %s and password = %s',(username,password, ))
+       cur.execute('select * from login where username = %s and password = %s and type = %s',(username,password,type, ))
        account = cur.fetchone()
-       if account:
+
+       if account and account['type'] == 'user':
             session['loggedin'] = True
             session['username'] = account['username']
             session['password'] = account['password']
+            session['type'] = account['type']
             return redirect('/home1')
+
+       if account and account['type'] == 'manager':
+            session['loggedin'] = True
+            session['username'] = account['username']
+            session['password'] = account['password']
+            session['type'] = account['type']
+            return redirect('/home2')
+
        else:
            return 'Incorrect Credentials'
 
@@ -41,12 +52,29 @@ def login():
 def home1():
     if request.method == 'POST':
 
-            # proceduresindex = ['procedure1','procedure2','procedure3','procedure4']
+            proceduresindex = [
+            ['procedure1',"call Allusers"],
+            ['procedure2',"SELECT ID, Name FROM city"]
+            ]
 
-            # procedure = ["call Allusers",
-            # "SELECT ID, Name FROM city",
-            # "SELECT Name FROM city",
-            # "SELECT ID FROM city"]
+            for i in range(len(proceduresindex)):
+
+                if request.form.get(proceduresindex[i][0]):
+                    cur = mysql.connection.cursor()
+                    cur.execute(proceduresindex[i][1])
+                    cur.close()
+
+            for i in range(len(proceduresindex)):
+
+                if request.form.get(proceduresindex[i][0]):
+                    userDetails = proceduresindex[i][0]
+                    return 'Procedure Executed'
+     
+    return render_template('home1.html')
+
+@app.route('/home2' ,methods=['GET','POST'])
+def home2():
+    if request.method == 'POST':
 
             proceduresindex = [
             ['procedure1',"call Allusers"],
@@ -62,27 +90,12 @@ def home1():
                     cur.execute(proceduresindex[i][1])
                     cur.close()
 
-            # if request.form.get('procedure2'):
-            #     cur = mysql.connection.cursor()
-            #     cur.execute("SELECT ID, Name FROM city")
-            #     cur.close()
-
-            # if request.form.get('procedure3'):
-            #     cur = mysql.connection.cursor()
-            #     cur.execute("SELECT Name FROM city")
-            #     cur.close()
-
-            # if request.form.get('procedure4'):
-            #     cur = mysql.connection.cursor()
-            #     cur.execute("SELECT ID FROM city")
-            #     cur.close()
-
             for i in range(len(proceduresindex)):
 
                 if request.form.get(proceduresindex[i][0]):
                     return 'Procedure Executed'
      
-    return render_template('home1.html')
+    return render_template('home2.html')
 
 
 # @app.route('/status', methods=['GET', 'POST'])
