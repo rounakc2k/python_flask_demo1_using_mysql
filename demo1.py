@@ -1,6 +1,6 @@
 import MySQLdb.cursors
 import re
-from flask import Flask, render_template, request, redirect ,  url_for, session
+from flask import Flask, render_template, request, redirect ,  url_for, session, jsonify
 from flask_mysqldb import MySQL
 import webbrowser
 import threading
@@ -48,6 +48,8 @@ def login():
 
     return render_template('login.html')
 
+
+
 @app.route('/home1' ,methods=['GET','POST'])
 def home1():
     if request.method == 'POST':
@@ -57,19 +59,30 @@ def home1():
             ['procedure2',"SELECT ID, Name FROM city"]
             ]
 
+            procedurename = ['Procedure 1','Procedure 2']
+
+            x = []
+
             for i in range(len(proceduresindex)):
 
                 if request.form.get(proceduresindex[i][0]):
                     cur = mysql.connection.cursor()
                     cur.execute(proceduresindex[i][1])
                     cur.close()
+                    x.append(procedurename[i])
 
-            for i in range(len(proceduresindex)):
+            # for i in range(len(proceduresindex)):
 
-                if request.form.get(proceduresindex[i][0]):
-                    userDetails = proceduresindex[i][0]
-                    return 'Procedure Executed'
-     
+            #     if request.form.get(proceduresindex[i][0]):
+            #         x.append(proceduresindex[i][0])
+                   
+                    # userDetails = [proceduresindex[i][0]]
+                    
+                    # msg = 'Procedure Executed'
+                    # return jsonify(msg)
+
+            return render_template('executed.html', x = x ) 
+            
     return render_template('home1.html')
 
 @app.route('/home2' ,methods=['GET','POST'])
@@ -83,17 +96,24 @@ def home2():
             ['procedure4',"SELECT ID FROM city"]
             ]
 
+            procedurename = ['Procedure 1','Procedure 2','Procedure 3','Procedure 4']
+
+            x = []
+
             for i in range(len(proceduresindex)):
 
                 if request.form.get(proceduresindex[i][0]):
                     cur = mysql.connection.cursor()
                     cur.execute(proceduresindex[i][1])
                     cur.close()
+                    x.append(procedurename[i])
 
-            for i in range(len(proceduresindex)):
+            # for i in range(len(proceduresindex)):
 
-                if request.form.get(proceduresindex[i][0]):
-                    return 'Procedure Executed'
+            #     if request.form.get(proceduresindex[i][0]):
+            #         return 'Procedure Executed'
+
+            return render_template('executed.html', x = x ) 
      
     return render_template('home2.html')
 
